@@ -13,11 +13,15 @@ print.leedid <- function(x, digits = 3, ...) {
               x$n$control, x$n$treated))
   cat("\n")
   cat(sprintf("CiC ATT (unconditional): %s\n", round(x$att, digits)))
+  if (!is.null(x$se)) {
+    cat(sprintf("  bootstrap SE:          %s\n", round(x$se$att, digits)))
+  }
   cat(sprintf("AO ATT bounds:           [%s, %s]\n",
               round(x$att_bounds["lb"], digits),
               round(x$att_bounds["ub"], digits)))
   if (!is.null(x$se)) {
-    cat(sprintf("  bootstrap SE:          %s\n", round(x$se$att, digits)))
+    cat(sprintf("  bootstrap SE:          [%s, %s]\n",
+                round(x$se$att_lb, digits), round(x$se$att_ub, digits)))
     ci <- x$ci$att_bounds
     cat(sprintf("  %.0f%% CI:               [%s, %s]\n",
                 100 * x$coverage,
