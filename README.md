@@ -13,18 +13,17 @@ status](https://img.shields.io/badge/CRAN-not%20yet%20submitted-lightgrey)](http
 LeeDiD implements the identification and estimation strategy of Viviens
 (2026), *“Estimating the Intensive Margin Effect in Panel Data
 Settings,”* for recovering the **intensive margin treatment effect**
-(e.g., the effect on wages among the employed) in panel data when
+(e.g., the effect on those always observed, regardless of the treatment received) in panel data when
 treatment is not randomly assigned.
 
-The package adapts the Horowitz-Manski-Lee bounds to the
-Changes-in-Changes framework to partially identify the average and
+The package adapts the Horowitz-Manski-Lee bounds to both the canonical Difference-in-Differences and the
+Changes-in-Changes frameworks to partially identify the average and
 quantile treatment effect on the treated among **“Always Observed”
 (AO)** units — those who would be selected into the estimation sample
 under either treatment arm. Unlike the original Lee bounds,
 identification here draws on **multiple sources of sample selection
 jointly** (e.g., employment status *and* survey attrition), which
-relaxes the monotonicity assumption needed for a single-source selection
-correction.
+relaxes the monotonicity assumption needed in the original Lee bounds.
 
 ## Installation
 
@@ -33,7 +32,7 @@ with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("JavierViviens/claude-code-my-workflow", subdir = "LeeDiD")
+devtools::install_github("JavierViviens/LeeDiD")
 ```
 
 ## Example
