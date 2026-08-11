@@ -1,0 +1,78 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# LeeDiD
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/JavierViviens/claude-code-my-workflow/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JavierViviens/claude-code-my-workflow/actions/workflows/R-CMD-check.yaml)
+[![CRAN status](https://img.shields.io/badge/CRAN-not%20yet%20submitted-lightgrey)](https://cran.r-project.org/)
+<!-- badges: end -->
+
+LeeDiD implements the identification and estimation strategy of Viviens
+(2026), *"Estimating the Intensive Margin Effect in Panel Data Settings,"*
+for recovering the **intensive margin treatment effect** (e.g., the effect
+on wages among the employed) in panel data when treatment is not randomly
+assigned.
+
+The package adapts the Horowitz-Manski-Lee bounds to the
+Changes-in-Changes framework to partially identify the average and
+quantile treatment effect on the treated among **"Always Observed" (AO)**
+units — those who would be selected into the estimation sample under either
+treatment arm. Unlike the original Lee bounds, identification here draws on
+**multiple sources of sample selection jointly** (e.g., employment status
+*and* survey attrition), which relaxes the monotonicity assumption needed
+for a single-source selection correction.
+
+## Installation
+
+LeeDiD is not yet on CRAN. Install the development version from GitHub with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("JavierViviens/claude-code-my-workflow", subdir = "LeeDiD")
+```
+
+## Example
+
+```{r example}
+library(LeeDiD)
+
+data(leedid_sim)
+
+fit <- leedid(
+  data           = leedid_sim,
+  yname          = "y",
+  tname          = "time",
+  idname         = "id",
+  gname          = "group",
+  selection_vars = c("employed", "responded"),
+  t              = 2,
+  tmin1          = 1,
+  boot           = TRUE,
+  biters         = 199,
+  seed           = 1
+)
+
+fit
+```
+
+```{r plot-example}
+plot(fit)
+```
+
+## Learn more
+
+See `vignette("intro-to-leedid")` for a full walkthrough of the method and
+the package's API.
