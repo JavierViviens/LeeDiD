@@ -21,19 +21,20 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 LeeDiD implements the identification and estimation strategy of Viviens
-(2026), *“Estimating the Intensive Margin Effect in Panel Data
-Settings,”* for recovering the **intensive margin treatment effect**
-(e.g., the effect on those always observed, regardless of the treatment received) in panel data when
-treatment is not randomly assigned.
+(2026), *"Estimating the Intensive Margin Effect in Panel Data Settings,"*
+for recovering the **intensive margin treatment effect** (e.g., the effect
+on those always observed, regardless of the treatment received) in panel
+data when treatment is not randomly assigned.
 
-The package adapts the Horowitz-Manski-Lee bounds to both the canonical Difference-in-Differences and the
-Changes-in-Changes frameworks to partially identify the average and
-quantile treatment effect on the treated among **“Always Observed”
-(AO)** units — those who would be selected into the estimation sample
-under either treatment arm. Unlike the original Lee bounds,
-identification here draws on **multiple sources of sample selection
-jointly** (e.g., employment status *and* survey attrition), which
-relaxes the monotonicity assumption in the original Lee bounds.
+The package adapts the Horowitz-Manski-Lee bounds to both the canonical
+Difference-in-Differences and the Changes-in-Changes frameworks to
+partially identify the average and quantile treatment effect on the
+treated among **"Always Observed" (AO)** units — those who would be
+selected into the estimation sample under either treatment arm. Unlike
+the original Lee bounds, identification here draws on **multiple sources
+of sample selection jointly** (e.g., employment status *and* survey
+attrition), which relaxes the monotonicity assumption needed in the
+original Lee bounds.
 
 ## Installation
 
@@ -41,7 +42,7 @@ LeeDiD is not yet on CRAN. Install the development version from GitHub with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("JavierViviens/claude-code-my-workflow", subdir = "LeeDiD")
+devtools::install_github("JavierViviens/LeeDiD")
 ```
 
 ## Example
@@ -61,8 +62,8 @@ fit <- leedid(
   t              = 2,
   tmin1          = 1,
   boot           = TRUE,
-  biters         = 199,
-  seed           = 1
+  biters         = 99,
+  seed           = 123
 )
 
 fit

@@ -13,17 +13,18 @@ status](https://img.shields.io/badge/CRAN-not%20yet%20submitted-lightgrey)](http
 LeeDiD implements the identification and estimation strategy of Viviens
 (2026), *“Estimating the Intensive Margin Effect in Panel Data
 Settings,”* for recovering the **intensive margin treatment effect**
-(e.g., the effect on those always observed, regardless of the treatment received) in panel data when
-treatment is not randomly assigned.
+(e.g., the effect on those always observed, regardless of the treatment
+received) in panel data when treatment is not randomly assigned.
 
-The package adapts the Horowitz-Manski-Lee bounds to both the canonical Difference-in-Differences and the
-Changes-in-Changes frameworks to partially identify the average and
-quantile treatment effect on the treated among **“Always Observed”
-(AO)** units — those who would be selected into the estimation sample
-under either treatment arm. Unlike the original Lee bounds,
-identification here draws on **multiple sources of sample selection
-jointly** (e.g., employment status *and* survey attrition), which
-relaxes the monotonicity assumption needed in the original Lee bounds.
+The package adapts the Horowitz-Manski-Lee bounds to both the canonical
+Difference-in-Differences and the Changes-in-Changes frameworks to
+partially identify the average and quantile treatment effect on the
+treated among **“Always Observed” (AO)** units — those who would be
+selected into the estimation sample under either treatment arm. Unlike
+the original Lee bounds, identification here draws on **multiple sources
+of sample selection jointly** (e.g., employment status *and* survey
+attrition), which relaxes the monotonicity assumption needed in the
+original Lee bounds.
 
 ## Installation
 
@@ -52,18 +53,18 @@ fit <- leedid(
   t              = 2,
   tmin1          = 1,
   boot           = TRUE,
-  biters         = 199,
-  seed           = 1
+  biters         = 99,
+  seed           = 123
 )
-#> Bootstrap: 20 / 199 replications done
-#> Bootstrap: 40 / 199 replications done
-#> Bootstrap: 60 / 199 replications done
-#> Bootstrap: 80 / 199 replications done
-#> Bootstrap: 100 / 199 replications done
-#> Bootstrap: 120 / 199 replications done
-#> Bootstrap: 140 / 199 replications done
-#> Bootstrap: 160 / 199 replications done
-#> Bootstrap: 180 / 199 replications done
+#> Bootstrap: 10 / 99 replications done
+#> Bootstrap: 20 / 99 replications done
+#> Bootstrap: 30 / 99 replications done
+#> Bootstrap: 40 / 99 replications done
+#> Bootstrap: 50 / 99 replications done
+#> Bootstrap: 60 / 99 replications done
+#> Bootstrap: 70 / 99 replications done
+#> Bootstrap: 80 / 99 replications done
+#> Bootstrap: 90 / 99 replications done
 
 fit
 #> LeeDiD: Intensive Margin Treatment Effect (Always-Observed units)
@@ -71,9 +72,10 @@ fit
 #> N (post-period): control = 252, treated = 236
 #> 
 #> CiC ATT (unconditional): 0.39
+#>   bootstrap SE:          0.055
 #> AO ATT bounds:           [-0.693, 1.322]
-#>   bootstrap SE:          0.049
-#>   95% CI:               [-1.093, 1.658]
+#>   bootstrap SE:          [0.27, 0.239]
+#>   95% CI:               [-1.138, 1.715]
 #> Classical DiD estimate:  0.38 [0.143, 0.624] (AO bounds)
 ```
 
