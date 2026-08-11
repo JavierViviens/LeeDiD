@@ -1,0 +1,117 @@
+---
+title: "Introduction to LeeDiD"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to LeeDiD}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(LeeDiD)
+```
+
+## The problem
+
+Many policies operate through two channels: an **extensive margin** (whether
+a unit participates at all) and an **intensive margin** (how intensely
+participants respond). A canonical example is a job-training program that
+affects both the probability of employment and, among the employed, wages.
+Recovering the intensive margin effect is complicated when the very fact of
+being observed (e.g., being employed, or responding to a follow-up survey)
+is itself affected by treatment and correlated with the outcome.
+
+LeeDiD implements the identification and estimation strategy of Viviens
+(2026) for this setting: it adapts the Horowitz-Manski-Lee bounds to the
+Changes-in-Changes (CiC) framework to partially identify the average and
+quantile treatment effect on the treated among **"Always Observed" (AO)**
+units — those who would have been selected into the estimation sample under
+*either* treatment arm. Unlike the original Lee bounds, which require a
+single source of sample selection satisfying a monotonicity assumption,
+this approach uses **multiple sources of sample selection jointly** (e.g.,
+employment status *and* survey response), which relaxes that assumption.
+
+## The data
+
+`leedid()` expects a balanced two-period panel: exactly one pre-treatment
+and one post-treatment row per unit, a time-invariant 0/1 group assignment,
+an outcome that is `NA` whenever a unit is not selected in a given period,
+and two or more 0/1 columns marking each source of selection.
+
+```{r}
+data(leedid_sim)
+head(leedid_sim)
+```
+
+Here `group` is the (time-invariant) treatment assignment, and a unit's
+outcome `y` is observed only when both `employed == 1` and
+`responded == 1`.
+
+## Estimating the intensive margin effect
+
+```{r}
+fit <- leedid(
+  leedid_sim,
+  yname          = "y",
+  tname          = "time",
+  idname         = "id",
+  gname          = "group",
+  selection_vars = c("employed", "responded"),
+  t              = 2,
+  tmin1          = 1,
+  boot           = TRUE,
+  biters         = 199,
+  seed           = 1
+)
+fit
+```
+
+The printed summary reports the estimated AO shares (`pi_0`, `pi_1`), the
+unconditional CiC point estimate of the ATT, the partially identified AO
+bounds on the ATT with their bootstrap standard error and Imbens-Manski
+(2004) confidence interval, and the classical two-way fixed-effects DiD
+estimate (with its own AO-trimmed bounds) as a benchmark comparison.
+
+## Quantile effects
+
+`summary()` additionally reports the bounds on the quantile treatment
+effect on the treated across a grid of quantiles:
+
+```{r}
+summary(fit)
+```
+
+`plot()` visualizes the same bounds:
+
+```{r plot-fit, fig.width=6, fig.height=4}
+plot(fit)
+```
+
+## Individual building blocks
+
+The pieces of the pipeline are also available on their own, useful for
+diagnostics or for building alternative aggregation schemes (e.g., across
+covariate strata):
+
+- `compute_ao_share()` — estimate `pi_0`/`pi_1` from the selection sources
+- `empirical_cdfs()` — the four group/period empirical CDFs and the CiC
+  counterfactual
+- `cic_qtt()` / `cic_bounds()` — the unconditional QTT and its AO bounds
+- `bootstrap_se()` — bootstrap standard errors for all of the above
+- `imbens_manski_ci()` — confidence interval for a partially identified
+  parameter, given estimates and standard errors of its bounds
+
+## A note on this release
+
+The real-data application in Viviens (2026) uses a Colombian job-training
+survey (Attanasio, Kugler and Meghir); that dataset is third-party and is
+not yet redistributed with this package pending confirmation of the
+applicable data-sharing terms. `leedid_sim` is a simulated dataset (see
+`?leedid_sim`) used here purely to illustrate the package's interface.
