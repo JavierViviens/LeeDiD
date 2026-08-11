@@ -23,8 +23,7 @@ quantile treatment effect on the treated among **“Always Observed”
 under either treatment arm. Unlike the original Lee bounds,
 identification here draws on **multiple sources of sample selection
 jointly** (e.g., employment status *and* survey attrition), which
-relaxes the monotonicity assumption needed for a single-source selection
-correction.
+relaxes the monotonicity assumption needed in the original Lee bounds.
 
 ## Installation
 
